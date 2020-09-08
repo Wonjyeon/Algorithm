@@ -73,13 +73,13 @@ int solution(vector<vector<int>> board)
                     continue;
                 // 회전 (각 축을 중심으로)
                 if (!visit[x1][y1][i])
-                { // (x1, y1)를 축으로.
+                {   // (x1, y1)를 축으로.
                     visit[x1][y1][i] = true;
                     visit[nx1][ny1][(i + 2) % 4] = true;
                     q.push({{x1, y1, i}, dist + 1});
                 }
                 if (!visit[x2][y2][i])
-                { // (x2, y2)를 축으로.
+                {   // (x2, y2)를 축으로.
                     visit[x2][y2][i] = true;
                     visit[nx2][ny2][(i + 2) % 4] = true;
                     q.push({{x2, y2, i}, dist + 1});
@@ -98,13 +98,13 @@ int solution(vector<vector<int>> board)
                     continue;
                 // 회전 (각 축을 중심으로)
                 if (!visit[x1][y1][i])
-                { // (x1, x2)를 축으로.
+                {   // (x1, y1)를 축으로.
                     visit[x1][y1][i] = true;
                     visit[nx1][ny1][(i + 2) % 4] = true;
                     q.push({{x1, y1, i}, dist + 1});
                 }
                 if (!visit[x2][y2][i])
-                {
+                {   // (x2, y2)를 축으로.
                     visit[x2][y2][i] = true;
                     visit[nx2][ny2][(i + 2) % 4] = true;
                     q.push({{x2, y2, i}, dist + 1});
