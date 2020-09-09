@@ -37,7 +37,8 @@
 
 #### 6. [외벽 점검](https://programmers.co.kr/learn/courses/30/lessons/60062)
 :pushpin: Tip
-
+- 원형으로 되어있는 리스트 -> weak.size()만큼 weak[0]번째 원소에 n을 더해서 push_back해준다.
+- dist가 8이하이므로, next_permutation을 이용해서 모든 조합의 경우를 구했다.
 <br>
 
 #### 7. [블록 이동하기](https://programmers.co.kr/learn/courses/30/lessons/60063)
