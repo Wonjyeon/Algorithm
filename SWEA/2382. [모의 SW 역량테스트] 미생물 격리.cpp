@@ -93,5 +93,6 @@ int main(){
             }
         }
         cout<<'#'<<tc<<' '<<ans<<'\n';
-    }    
+    }
+    return 0;
 }
