@@ -19,6 +19,7 @@ void print() {
 		}
 		cout << endl;
 	}
+	return;
 }
 void downMap() {
 	while (1) {
@@ -35,6 +36,7 @@ void downMap() {
 		}
 		if (cnt == 0) return;
 	}
+	return;
 }
 void solution(int n, int total) {
 	if (total == 0) {
@@ -86,6 +88,7 @@ void solution(int n, int total) {
 		}
 		map = tmp;
 	}
+	return;
 }
 
 int main() {
