@@ -30,7 +30,8 @@ v[0].size();
 #include <vector>
 #include <sstream>
 #include <cstring> 
-#include <algorithm>sing namespace std;
+#include <algorithm>
+using namespace std;
 
 vector<int> answer;
 bool check[100001];
