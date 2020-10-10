@@ -1,95 +1,102 @@
 #include <iostream>
-#include <vector>
 #include <queue>
-#include <algorithm>
+#include <vector>
 using namespace std;
 
-int T, N, M, K, A, B, atime[10], btime[10], min_time = 0, max_time = 0;
-vector<int> Reception[10];
-vector<int> Repair[10];
-vector<int> tk[1001];
+int T, A, B, N = 0, M = 0, K = 0, minTime = 0, maxTime = 0;
+int aTime[10], bTime[10];
+vector<int> cTime[1001];
+vector<int> recept[10];
+vector<int> repair[10];
 
-void solution() {
-	int cnt = 0;
-	int time = min_time;
-	int last_num = 0;
-	int a[10] = { 0, };
-	int b[10] = {0, };
-	int check[1001] = { 0, };
-	queue<int> wait1, wait2;
-	while (1) {
-		if (time <= max_time && tk[time].size() > 0) {
-			for (int i = 0; i < tk[time].size(); i++) {
-				wait1.push(tk[time][i]);
+void init(){
+	for(int i=1; i<=N; i++){
+		recept[i].clear();
+	}
+	for(int i=1; i<=M; i++){
+		repair[i].clear();
+	}
+	for(int i=0; i<=maxTime; i++){
+		cTime[i].clear();
+	}
+	return;
+}
+
+void solution(){
+	int receptCnt = 0, time = minTime, lastA = 0;
+	int receptArr[10] = {0, };
+	int repairArr[10] = {0, };
+	bool checkRepair[1001] = {false, };
+	queue<int> receptReady, repairReady;
+	while(1){
+		if(time <= maxTime && cTime[time].size() > 0){
+			for(int i=0; i<cTime[time].size(); i++){
+				receptReady.push(cTime[time][i]);
 			}
 		}
 		// 접수 창구
-		for (int i = 1; i <= N; i++) {
-			a[i]--;
-			if (a[i] == 0) {
-				wait2.push(Reception[i].back());
+		if(receptCnt < K){
+			for(int i=1; i<=N; i++){
+				receptArr[i]--;
+				if(receptArr[i] == 0){
+					repairReady.push(recept[i].back());
+					receptCnt++;
+				}
+				if(receptArr[i] <= 0 && !receptReady.empty()){
+					receptArr[i] = aTime[i];
+					recept[i].push_back(receptReady.front());
+					receptReady.pop();
+				}
 			}
-			if (a[i] <= 0 && wait1.size() > 0) {
-				a[i] = atime[i];
-				Reception[i].push_back(wait1.front());
-				wait1.pop();
-				cnt++;
-			}
+			if(receptCnt == K)
+				lastA = recept[A].back();
 		}
-		if (cnt == K) {
-			last_num = Reception[A].back();
-		}
+
 		// 정비 창구
-		for (int i = 1; i <= M; i++) {
-				b[i]--;
-			if (b[i] <= 0 && wait2.size() > 0) {
-				b[i] = btime[i];
-				Repair[i].push_back(wait2.front());
-				check[wait2.front()] = 1;
-				if (check[last_num] == 1) return;
-				wait2.pop();
+		for(int i=1; i<=M; i++){
+			repairArr[i]--;
+			if(repairArr[i] <= 0 && !repairReady.empty()){
+				repairArr[i] = bTime[i];
+				repair[i].push_back(repairReady.front());
+				checkRepair[repairReady.front()] = true;
+				if(checkRepair[lastA]) return;
+				repairReady.pop();
 			}
 		}
 		time++;
 	}
-    return;
 }
 
-int main() {
+int main(){
 	ios::sync_with_stdio(0); cin.tie(0);
-	cin >> T;
-	for (int tc = 1; tc <= T; tc++) {
-		cin >> N >> M >> K >> A >> B;
-		int t;
-		for (int i = 0; i < 10; i++) {
-			Reception[i].clear();
-			Repair[i].clear();
+	cin>>T;
+	for(int tc=1; tc<=T; tc++){
+		cin>>N>>M>>K>>A>>B;
+		int t, ans = 0;
+		init();
+		for(int i=1; i<=N; i++){
+			cin>>aTime[i];
 		}
-		for (int i = 0; i < 1001; i++) {
-			tk[i].clear();
+		for(int i=1; i<=M; i++){
+			cin>>bTime[i];
 		}
-		for (int i = 1; i <= N; i++)
-			cin >> atime[i];
-		for (int i = 1; i <= M; i++)
-			cin >> btime[i];
-		for (int i = 1; i <= K; i++) {
-			cin >> t;
-			if (i == 1) min_time = t;
-			else if (i == K) max_time = t;
-			tk[t].push_back(i);
+		for(int i=1; i<=K; i++){
+			cin>>t;
+			if(i == 1) minTime = t;
+			else if(i == K) maxTime = t;
+			cTime[t].push_back(i);
 		}
 		solution();
-		int ans = 0;
-		for (int i = 0; i < Reception[A].size(); i++) {
-			for (int j = 0; j < Repair[B].size(); j++) {
-				if (Reception[A][i] == Repair[B][j]) {
-					ans += Reception[A][i];
+		for(int i=0; i<recept[A].size(); i++){
+			for(int j=0; j<repair[B].size(); j++){
+				if(recept[A][i] == repair[B][j]){
+					ans+=recept[A][i];
 					break;
 				}
 			}
 		}
-		if (ans == 0) ans = -1;
-		cout << '#' << tc << ' ' << ans << '\n';
+		if(ans == 0) ans = -1;
+		cout<<'#'<<tc<<' '<<ans<<'\n';
 	}
-    return 0;
+	return 0;
 }
